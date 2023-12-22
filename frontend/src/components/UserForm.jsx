@@ -14,11 +14,10 @@ export const UserForm = () => {
     { value: "skill4", label: "skill 4" },
   ];
 
-  const [submitState, setSubmitState] = useState();
+  const [submitState, setSubmitState] = useState(false);
   const [inputValues, setInputValues] = useState({
     name: "",
     education: "",
-    skills: [],
     gender: "",
     phone: "",
     email: "",
@@ -28,13 +27,13 @@ export const UserForm = () => {
   localStorage.setItem("storedFetchedData", JSON.stringify(fectchData));
 
   const handleSkillsChange = (e) => {
-    const selectedOptions = Array.from(
+    const skills = Array.from(
       e.target.selectedOptions,
       (option) => option.value
     );
     setInputValues({
       ...inputValues,
-      selectedOptions,
+      skills,
     });
   };
 
@@ -43,21 +42,21 @@ export const UserForm = () => {
     setInputValues({
       ...inputValues,
       [name]: value,
-      skills: selectedOptions,
     });
   };
 
   const addData = () => {
     axios
-      .post("http://localhost:8080/add", inputValues)
+      .post("https://edstem-backend.onrender.com/add", inputValues)
       .then((res) => {
         alert("data added successfully");
+        getData();
       })
       .catch((err) => console.log(err));
   };
   const getData = () => {
     axios
-      .get("http://localhost:8080/get")
+      .get("https://edstem-backend.onrender.com/get")
       .then((res) => setFetchData(res.data))
       .catch((err) => console.log(err));
   };
